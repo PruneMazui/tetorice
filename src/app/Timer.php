@@ -3,7 +3,7 @@ namespace PruneMazui\Tetrice;
 
 class Timer implements LoopProcessInterface
 {
-    private $fps = 30;
+    private $fps = 15;
 
     private $flame_count = 0;
 
@@ -14,10 +14,15 @@ class Timer implements LoopProcessInterface
     public function __construct(callable $frame_process)
     {
         $this->frame_process = $frame_process;
+        ob_start();
     }
 
     private function execFrameProcess()
     {
+        // ちらつき防止のためあえてここで flush
+        ob_flush();
+        flush();
+
         $this->flame_count++;
         ($this->frame_process)(intval((microtime(true) - $this->start) * 1000));
     }

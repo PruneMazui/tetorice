@@ -9,6 +9,6 @@ class TileMagenta extends AbstractTile
      */
     public function getColorSequence()
     {
-        return 45;
+        return 46;
     }
 }
