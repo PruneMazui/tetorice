@@ -1,5 +1,5 @@
 <?php
-use PruneMazui\Tetris\Application;
+use PruneMazui\Tetrice\Application;
 
 require_once __DIR__ . '/../vendor/autoload.php';
 

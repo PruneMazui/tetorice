@@ -1,5 +1,5 @@
 <?php
-namespace PruneMazui\Tetris;
+namespace PruneMazui\Tetrice;
 
 class Timer implements LoopProcessInterface
 {
@@ -24,7 +24,7 @@ class Timer implements LoopProcessInterface
 
     /**
      * {@inheritDoc}
-     * @see \PruneMazui\Tetris\LoopProcessInterface::loopProcess()
+     * @see \PruneMazui\Tetrice\LoopProcessInterface::loopProcess()
      */
     public function loopProcess()
     {

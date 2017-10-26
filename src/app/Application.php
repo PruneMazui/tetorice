@@ -1,5 +1,7 @@
 <?php
-namespace PruneMazui\Tetris;
+namespace PruneMazui\Tetrice;
+
+use PruneMazui\Tetrice\GameCore\GameManager;
 
 class Application
 {
@@ -13,42 +15,17 @@ class Application
     public function run()
     {
         $controller = new Controller();
-        $timer = new Timer(function ($mm_sec) use ($controller){
-            $input = [];
+        $game_manager = new GameManager($controller);
 
-            if ($controller->isInputLeft()) {
-                $input[] = 'LEFT';
-            }
-
-            if ($controller->isInputRight()) {
-                $input[] = 'RIGHT';
-            }
-
-            if ($controller->isInputDown()) {
-                $input[] = 'DOWN';
-            }
-
-            if ($controller->isInputUp()) {
-                $input[] = 'UP';
-            }
-
-            if ($controller->isInputRotateRight()) {
-                $input[] = 'ROTATE_RIGHT';
-            }
-
-            if ($controller->isInputRotateLeft()) {
-                $input[] = 'ROTATE_LEFT';
-            }
-
-            echo $mm_sec . ' : ' . implode(' ', $input) . "\n";
-
+        $timer = new Timer(function ($mm_sec) use ($game_manager, $controller) {
+            $game_manager->frameProcess($mm_sec);
             $controller->clear();
         });
 
         // キーボード入力時エンターを回避、入力内容を出力しない
         while (true) {
-            $controller->process();
-            $timer->process();
+            $controller->loopProcess();
+            $timer->loopProcess();
 
             usleep(1000);
         }

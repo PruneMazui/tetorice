@@ -1,10 +1,12 @@
 <?php
-namespace PruneMazui\Tetris;
+namespace PruneMazui\Tetrice;
 
 interface FrameProcessInterface
 {
     /**
-     * ループ処理
+     * １フレームにおける処理
+     *
+     * @param int $mm_sec 
      */
-    public function frameProcess();
+    public function frameProcess($mm_sec);
 }

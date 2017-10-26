@@ -1,5 +1,5 @@
 <?php
-namespace PruneMazui\Tetris;
+namespace PruneMazui\Tetrice;
 
 class Controller implements LoopProcessInterface
 {
@@ -69,7 +69,7 @@ class Controller implements LoopProcessInterface
 
     /**
      * {@inheritDoc}
-     * @see \PruneMazui\Tetris\LoopProcessInterface::loopProcess()
+     * @see \PruneMazui\Tetrice\LoopProcessInterface::loopProcess()
      */
     public function loopProcess()
     {

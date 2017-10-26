@@ -1,5 +1,5 @@
 <?php
-namespace PruneMazui\Tetris;
+namespace PruneMazui\Tetrice;
 
 interface LoopProcessInterface
 {
