@@ -81,9 +81,6 @@ class Renderer
         // 描画
         echo $output;
         $this->previous = $output;
-
-        // カーソル非表示
-        echo "\e[?1c\e[m";
     }
 
     /**

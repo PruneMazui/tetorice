@@ -14,6 +14,10 @@ class Application
 
     public function run()
     {
+        if (function_exists('ncurses_curs_set')) {
+            ncurses_curs_set(0);
+        }
+
         $controller = new Controller();
         $game_manager = new GameManager($controller);
 
