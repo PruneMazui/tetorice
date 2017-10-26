@@ -9,5 +9,9 @@ yum install -y --enablerepo=remi-php71 php php-cli php-common php-devel php-pecl
 sed -i -e "s/SELINUX=enforcing/SELINUX=disabled/" /etc/selinux/config
 setenforce 0
 
+cd /source/
+curl -sS https://getcomposer.org/installer | php
+php composer.phar install
+
 echo "provisioning success"
 
