@@ -18,13 +18,8 @@ class Application
         $controller = new Controller();
         $game_manager = new GameManager($controller);
 
-        $timer = new Timer(function ($mm_sec) use ($game_manager, $controller) {
+        $timer = new Timer(function ($mm_sec) use ($game_manager) {
             $game_manager->frameProcess($mm_sec);
-
-            if (_DEBUG) {
-                echo "\e[0K";
-                echo 'INPUT : ' . implode(', ', $controller->getInputsArray());
-            }
         });
 
         try {

@@ -84,8 +84,11 @@ class Renderer
         $output .= $fillWhite();
 
         // 描画
-        $this->rewindCursor();
-        echo $output;
+        if ($this->previous != $output) {
+            $this->rewindCursor();
+            echo $output;
+            $this->previous = $output;
+        }
     }
 
     /**
