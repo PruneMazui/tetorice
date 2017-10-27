@@ -14,15 +14,17 @@ class Application
 
     public function run()
     {
-        if (function_exists('ncurses_curs_set')) {
-            ncurses_curs_set(0);
-        }
-
         $controller = new Controller();
         $game_manager = new GameManager($controller);
 
         $timer = new Timer(function ($mm_sec) use ($game_manager, $controller) {
             $game_manager->frameProcess($mm_sec);
+
+            if (_DEBUG) {
+                echo "\e[0K";
+                echo 'INPUT : ' . implode(', ', $controller->getInputsArray());
+            }
+
             $controller->clear();
         });
 

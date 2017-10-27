@@ -2,7 +2,7 @@ VAGRANTFILE_API_VERSION = "2"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   config.vm.box = "centos/7"
-  config.vm.network :private_network, ip: "10.10.10.0"
+  config.vm.network :private_network, ip: "10.10.10.40"
   config.vm.synced_folder ".", "/source/"
   Encoding.default_external = 'UTF-8'
 

@@ -32,6 +32,8 @@ class Controller implements LoopProcessInterface
      */
     private $prebuffer = [];
 
+    private $old_stty;
+
     private function readNonBlock(&$data) {
         $read = [STDIN];
         $write = [];
@@ -54,8 +56,10 @@ class Controller implements LoopProcessInterface
 
     public function __construct(array $config = [])
     {
+        $this->old_stty = shell_exec('stty -g');
+
         // キーボード入力時エンターを回避、入力内容を出力しない
-        system("stty -echo -icanon");
+        shell_exec("stty -icanon -echo");
         stream_set_blocking(STDIN, false);
 
         // @todo config
@@ -63,7 +67,7 @@ class Controller implements LoopProcessInterface
 
     public function __destruct()
     {
-        system("stty echo icanon");
+        system('stty ' . $this->old_stty);
         stream_get_contents(STDIN);
     }
 
@@ -163,8 +167,30 @@ class Controller implements LoopProcessInterface
             !($this->isInput(self::ROTATE_LEFT, true) && ! $this->isInput(self::ROTATE_RIGHT, true));
     }
 
+    /**
+     * @return array
+     */
     public function getBuffer()
     {
         return $this->buffer;
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getInputsArray()
+    {
+        $ret = [];
+
+        foreach ($this->key_map as $name => $map) {
+            foreach ($map as $needle) {
+                if (isset($this->buffer[$needle])) {
+                    $ret[$name] = $name;
+                    break;
+                }
+            }
+        }
+
+        return $ret;
     }
 }

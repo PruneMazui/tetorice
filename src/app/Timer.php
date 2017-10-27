@@ -19,12 +19,12 @@ class Timer implements LoopProcessInterface
 
     private function execFrameProcess()
     {
-        // ちらつき防止のためあえてここで flush
-        ob_flush();
-        flush();
-
         $this->flame_count++;
-        ($this->frame_process)(intval((microtime(true) - $this->start) * 1000));
+
+        $callback = $this->frame_process;
+        $callback(intval((microtime(true) - $this->start) * 1000));
+
+        ob_flush();
     }
 
     /**

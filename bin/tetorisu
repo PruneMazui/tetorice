@@ -1,3 +1,4 @@
 #!/usr/bin/env php
 <?php
-(include __DIR__ . '/../src/bootstrap.php')->run();
+$app = include __DIR__ . '/../src/bootstrap.php';
+$app->run();

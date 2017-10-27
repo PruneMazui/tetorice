@@ -52,13 +52,12 @@ class Renderer
         if (strlen($this->title) % 2 === 1) {
             $this->title .= ' ';
         }
+
+        system('clear');
     }
 
     public function render(Field $field)
     {
-        // カーソルを戻す
-        $this->rewindCursor($this->previous);
-
         $feild_width = $field->getWidth();
 
         $fillWhite = function () use ($feild_width) {
@@ -79,8 +78,8 @@ class Renderer
         $output .= $fillWhite();
 
         // 描画
+        $this->rewindCursor();
         echo $output;
-        $this->previous = $output;
     }
 
     /**
@@ -141,15 +140,8 @@ class Renderer
      * ターミナルのカーソルを先頭に戻す
      * @param Field $field
      */
-    private function rewindCursor($output)
+    private function rewindCursor()
     {
-        if (strlen($output) == 0) {
-            return;
-        }
-
-        $output = explode("\n", $output);
-        $height = count($output) - 1;
-
-        echo "\e[{$height}A";
+        echo "\e[2;0H";
     }
 }
