@@ -86,23 +86,39 @@ class Controller implements LoopProcessInterface
 
     /**
      * 入力バッファをクリア
+     * @param string | array optional $types
      */
-    public function clear()
+    public function clear($types = null)
     {
-        $this->prebuffer = $this->buffer;
-        $this->buffer = [];
+        if (is_null($types)) {
+            $this->buffer = [];
+            return;
+        }
+
+        if (! is_array($types)) {
+            $types = [$types];
+        }
+
+        foreach ($types as $type) {
+            if (! isset($this->key_map[$type])) {
+                continue;
+            }
+
+            foreach ($this->key_map[$type] as $key) {
+                unset($this->buffer[$key]);
+            }
+        }
+
     }
 
-    private function isInput($key, $is_previous = false)
+    private function isInput($key)
     {
         if (! isset($this->key_map[$key])) {
             return false;
         }
 
-        $buffer = $is_previous ? $this->prebuffer : $this->buffer;
-
         foreach ($this->key_map[$key] as $needle) {
-            if (isset($buffer[$needle])) {
+            if (isset($this->buffer[$needle])) {
                 return true;
             }
         }
@@ -152,9 +168,7 @@ class Controller implements LoopProcessInterface
      */
     public function isInputRotateRight()
     {
-        // 前回入力されているときは無視
-        return $this->isInput(self::ROTATE_RIGHT) && ! $this->isInput(self::ROTATE_LEFT) &&
-            !($this->isInput(self::ROTATE_RIGHT, true) && ! $this->isInput(self::ROTATE_LEFT, true));
+        return $this->isInput(self::ROTATE_RIGHT) && ! $this->isInput(self::ROTATE_LEFT);
     }
 
     /**
@@ -163,8 +177,7 @@ class Controller implements LoopProcessInterface
      */
     public function isInputRotateLeft()
     {
-        return $this->isInput(self::ROTATE_LEFT) && ! $this->isInput(self::ROTATE_RIGHT) &&
-            !($this->isInput(self::ROTATE_LEFT, true) && ! $this->isInput(self::ROTATE_RIGHT, true));
+        return $this->isInput(self::ROTATE_LEFT) && ! $this->isInput(self::ROTATE_RIGHT);
     }
 
     /**

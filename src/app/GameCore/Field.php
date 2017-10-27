@@ -1,6 +1,8 @@
 <?php
 namespace PruneMazui\Tetrice\GameCore;
 
+use PruneMazui\Tetrice\GameCore\Tetoriminone\AbstractTetoriminone;
+
 class Field
 {
     private $width = 10;
@@ -8,7 +10,7 @@ class Field
     private $height = 20;
 
     /**
-     * @var array [h_px][w_px]
+     * @var array [y][x]
      */
     private $map = [];
 
@@ -46,6 +48,53 @@ class Field
     public function getHeight()
     {
         return $this->height;
+    }
+
+    /**
+     * 衝突判定
+     * @param array $coordinates [[x, y], [x, y], [x, y], [x, y]]
+     * @return boolean
+     */
+    public function isCollision($coordinates)
+    {
+        foreach ($coordinates as $coordinate) {
+            list ($x, $y) = $coordinate;
+
+            if ($x < 0) {
+                return true;
+            }
+
+            if ($x > $this->width - 1) {
+                return true;
+            }
+
+            if ($y > $this->height - 1) {
+                return true;
+            }
+
+            // y座標マイナスは考慮しない
+            if ($y < 0) {
+                continue;
+            }
+
+            if (! is_null($this->map[$y][$x])) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * 着地させる
+     * @param AbstractTetoriminone $tetoriminone
+     */
+    public function land(AbstractTetoriminone $tetoriminone)
+    {
+        foreach ($tetoriminone->getCoordinates() as $coordinate) {
+            list($x, $y) = $coordinate;
+            $this->map[$y][$x] = $tetoriminone->getTile();
+        }
     }
 
 }

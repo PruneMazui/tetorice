@@ -2,6 +2,7 @@
 namespace PruneMazui\Tetrice;
 
 use PruneMazui\Tetrice\GameCore\GameManager;
+use PruneMazui\Tetrice\GameCore\GameOverException;
 
 class Application
 {
@@ -24,16 +25,17 @@ class Application
                 echo "\e[0K";
                 echo 'INPUT : ' . implode(', ', $controller->getInputsArray());
             }
-
-            $controller->clear();
         });
 
-        // キーボード入力時エンターを回避、入力内容を出力しない
-        while (true) {
-            $controller->loopProcess();
-            $timer->loopProcess();
+        try {
+            while (true) {
+                $controller->loopProcess();
+                $timer->loopProcess();
 
-            usleep(1000);
+                usleep(1000);
+            }
+        } catch (GameOverException $ex) {
+            echo "\n!!!GAME OVER!!!\n";
         }
     }
 }

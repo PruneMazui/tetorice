@@ -5,6 +5,7 @@ namespace PruneMazui\Tetrice\GameCore;
 use PruneMazui\Tetrice\GameCore\Tile\TileWhite;
 use PruneMazui\Tetrice\GameCore\Tile\AbstractTile;
 use PruneMazui\Tetrice\GameCore\Tile\TileBlack;
+use PruneMazui\Tetrice\GameCore\Tetoriminone\AbstractTetoriminone;
 
 class Renderer
 {
@@ -56,7 +57,12 @@ class Renderer
         system('clear');
     }
 
-    public function render(Field $field)
+    /**
+     * 描画
+     * @param Field $field
+     * @param AbstractTetoriminone nullable $tetoriminone
+     */
+    public function render(Field $field, $tetoriminone)
     {
         $feild_width = $field->getWidth();
 
@@ -74,7 +80,7 @@ class Renderer
         $output .= $fillWhite();
 
         // フィールド
-        $output .= $this->makeFeild($field);
+        $output .= $this->makeFeild($field, $tetoriminone);
         $output .= $fillWhite();
 
         // 描画
@@ -110,11 +116,23 @@ class Renderer
         return $ret . "\n";
     }
 
-    private function makeFeild(Field $field)
+    private function makeFeild(Field $field, $tetoriminone)
     {
         $ret = "";
 
-        foreach ($field->getMap() as $line) {
+        $map = $field->getMap();
+        if ($tetoriminone instanceof AbstractTetoriminone) {
+            foreach ($tetoriminone->getCoordinates() as $coordinate) {
+                list($x, $y) = $coordinate;
+                if ($y < 0) {
+                    continue;
+                }
+
+                $map[$y][$x] = $tetoriminone->getTile();
+            }
+        }
+
+        foreach ($map as $line) {
             $ret .= TileWhite::getInstance() . TileBlack::getInstance();
             foreach ($line as $col) {
                 if ($col instanceof AbstractTile) {
