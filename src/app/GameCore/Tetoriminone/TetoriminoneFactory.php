@@ -29,7 +29,7 @@ class TetoriminoneFactory
         switch (mt_rand() % 7) {
             case 0:
             case 1:
-            case 2:
+            case 2: return new ITetoriminone($this->feild, $this->controller, $mm_sec);
             case 3:
             case 4:
             case 5:
