@@ -34,7 +34,7 @@ class TetoriminoneFactory
             case 1: return new STetoriminone($field, $controller, $mm_sec);
             case 2: return new ITetoriminone($field, $controller, $mm_sec);
             case 3:
-            case 4:
+            case 4: return new ZTetoriminone($field, $controller, $mm_sec);
             case 5:
             default: return new OTetoriminone($field, $controller, $mm_sec);
         }
