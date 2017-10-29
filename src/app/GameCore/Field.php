@@ -51,6 +51,15 @@ class Field
     }
 
     /**
+     * 水平位置の中心を返す
+     * @return int
+     */
+    public function getHorizontalCenter()
+    {
+        return intval($this->width / 2);
+    }
+
+    /**
      * 衝突判定
      * @param array $coordinates [[x, y], [x, y], [x, y], [x, y]]
      * @return boolean
