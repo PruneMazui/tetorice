@@ -18,11 +18,7 @@ class Field
     {
         // マップを初期化
         for ($i = 0; $i < $this->height; $i++) {
-            $this->map[$i] = [];
-
-            for ($j = 0; $j < $this->width; $j++) {
-                $this->map[$i][$j] = null;
-            }
+            $this->map[$i] = array_fill(0, $this->width, null);
         }
     }
 
@@ -104,6 +100,41 @@ class Field
             list($x, $y) = $coordinate;
             $this->map[$y][$x] = $tetoriminone->getTile();
         }
+    }
+
+    /**
+     * 揃ってるラインを消す
+     * @return int 消したライン数
+     */
+    public function erase()
+    {
+        $erase_count = 0;
+        $new = [];
+
+        foreach ($this->map as $y => $line) {
+            $is_erasable = true;
+
+            foreach ($line as $y => $value) {
+                if (is_null($value)) {
+                    $is_erasable = false;
+                    break;
+                }
+            }
+
+            if (! $is_erasable) {
+                $new[] = $line;
+                continue;
+            }
+
+            $erase_count++;
+        }
+
+        for ($i = 0; $i < $erase_count; $i++) {
+            array_unshift($new, array_fill(0, $this->width, null));
+        }
+
+        $this->map = $new;
+        return $erase_count;
     }
 
 }

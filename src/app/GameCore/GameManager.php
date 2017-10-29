@@ -57,6 +57,8 @@ class GameManager implements FrameProcessInterface
         if ($this->tetoriminone->isLand()) {
             $this->field->land($this->tetoriminone);
 
+            $this->field->erase();
+
             $this->tetoriminone = null;
         }
 
