@@ -26,14 +26,17 @@ class TetoriminoneFactory
      */
     public function create($mm_sec)
     {
+        $field = $this->feild;
+        $controller = $this->controller;
+
         switch (mt_rand() % 7) {
             case 0:
-            case 1:
-            case 2: return new ITetoriminone($this->feild, $this->controller, $mm_sec);
+            case 1: return new STetoriminone($field, $controller, $mm_sec);
+            case 2: return new ITetoriminone($field, $controller, $mm_sec);
             case 3:
             case 4:
             case 5:
-            default: return new OTetoriminone($this->feild, $this->controller, $mm_sec);
+            default: return new OTetoriminone($field, $controller, $mm_sec);
         }
     }
 }
