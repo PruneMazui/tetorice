@@ -7,7 +7,6 @@ define('_DEBUG', true);
 
 $config = [
     'fps' => 60 // 20分の1秒×1000（ミリ秒）
-
 ];
 
 return new Application($config);
