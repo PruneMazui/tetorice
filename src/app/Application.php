@@ -18,8 +18,11 @@ class Application
         $controller = new Controller();
         $game_manager = new GameManager($controller);
 
+        ob_start();
+
         $timer = new Timer(function ($mm_sec) use ($game_manager) {
             $game_manager->frameProcess($mm_sec);
+            ob_flush();
         });
 
         try {
