@@ -64,11 +64,11 @@ class Renderer
      */
     public function render(Field $field, $tetoriminone)
     {
-        $feild_width = $field->getWidth();
+        $field_width = $field->getWidth();
 
-        $fillWhite = function () use ($feild_width) {
+        $fillWhite = function () use ($field_width) {
             $ret = "";
-            for ($i = 0; $i < ($feild_width + 4); $i++) {
+            for ($i = 0; $i < ($field_width + 4); $i++) {
                 $ret .= TileWhite::getInstance();
             }
             return $ret . "\n";
@@ -76,7 +76,7 @@ class Renderer
 
         // 先頭3行
         $output = $fillWhite();
-        $output .= $this->makeTitleLine($feild_width);
+        $output .= $this->makeTitleLine($field_width);
         $output .= $fillWhite();
 
         // フィールド
@@ -93,13 +93,13 @@ class Renderer
 
     /**
      * タイトル行を作成
-     * @param int $feild_width
+     * @param int $field_width
      * @return string
      */
-    private function makeTitleLine($feild_width)
+    private function makeTitleLine($field_width)
     {
         $ret = "";
-        $width = $feild_width + 4;
+        $width = $field_width + 4;
 
         // 空白間隔を決める
         // 2文字で幅1と換算

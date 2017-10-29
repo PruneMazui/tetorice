@@ -6,17 +6,17 @@ use PruneMazui\Tetrice\Controller;
 
 class TetoriminoneFactory
 {
-    private $feild;
+    private $field;
 
     private $controller;
 
     /**
-     * @param Field $feild
+     * @param Field $field
      * @param Controller $controller
      */
-    public function __construct(Field $feild, Controller $controller)
+    public function __construct(Field $field, Controller $controller)
     {
-        $this->feild = $feild;
+        $this->field = $field;
         $this->controller = $controller;
     }
 
@@ -26,7 +26,7 @@ class TetoriminoneFactory
      */
     public function create($mm_sec)
     {
-        $field = $this->feild;
+        $field = $this->field;
         $controller = $this->controller;
 
         switch (mt_rand() % 7) {
