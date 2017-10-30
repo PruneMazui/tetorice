@@ -74,7 +74,7 @@ abstract class AbstractTetoriminone implements FrameProcessInterface
     /**
      * 座標初期化
      *
-     * @param Feild $field
+     * @param Field $field
      * @return bool
      */
     protected function initCoordinates(Field $field)
@@ -92,7 +92,7 @@ abstract class AbstractTetoriminone implements FrameProcessInterface
     /**
      * 現在位置から動く
      *
-     * @param Feild $field
+     * @param Field $field
      * @param boolean optional $is_left
      * @return bool
      */

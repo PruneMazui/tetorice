@@ -15,7 +15,7 @@ curl -sS https://getcomposer.org/installer | php
 mv composer.phar /usr/local/bin/composer
 
 cd /source/
-composer install
+php /usr/local/bin/composer install
 
 echo "provisioning success"
 

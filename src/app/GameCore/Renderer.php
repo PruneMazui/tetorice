@@ -23,7 +23,7 @@ class Renderer
  * ■□                    □■
  * ■□       ここが       □■
  * ■□                    □■
- * ■□       Feildの      □■
+ * ■□       Fieldの      □■
  * ■□                    □■
  * ■□       縦横         □■
  * ■□                    □■
@@ -80,7 +80,7 @@ class Renderer
         $output .= $fillWhite();
 
         // フィールド
-        $output .= $this->makeFeild($field, $tetoriminone);
+        $output .= $this->makeField($field, $tetoriminone);
         $output .= $fillWhite();
 
         // 描画
@@ -119,7 +119,7 @@ class Renderer
         return $ret . "\n";
     }
 
-    private function makeFeild(Field $field, $tetoriminone)
+    private function makeField(Field $field, $tetoriminone)
     {
         $ret = "";
 

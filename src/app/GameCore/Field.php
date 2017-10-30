@@ -2,6 +2,7 @@
 namespace PruneMazui\Tetrice\GameCore;
 
 use PruneMazui\Tetrice\GameCore\Tetoriminone\AbstractTetoriminone;
+use PruneMazui\Tetrice\GameCore\Tile\AbstractTile;
 
 class Field
 {
@@ -10,7 +11,7 @@ class Field
     private $height = 20;
 
     /**
-     * @var array [y][x]
+     * @var array (AbstractTile|null)[y][x]
      */
     private $map = [];
 
@@ -20,6 +21,19 @@ class Field
         for ($i = 0; $i < $this->height; $i++) {
             $this->map[$i] = array_fill(0, $this->width, null);
         }
+    }
+
+    /**
+     * @param int $x
+     * @param int $y
+     * @param AbstractTile $tile
+     */
+    public function setTile($x, $y, AbstractTile $tile)
+    {
+        assert('array_key_exists($y, $this->map)');
+        assert('array_key_exists($x, $this->map[$y])');
+
+        $this->map[$y][$x] = $tile;
     }
 
     /**
@@ -98,6 +112,15 @@ class Field
     {
         foreach ($tetoriminone->getCoordinates() as $coordinate) {
             list($x, $y) = $coordinate;
+
+            if ($x < 0 || $x >= $this->width) {
+                continue;
+            }
+
+            if ($y < 0 || $y >= $this->height) {
+                continue;
+            }
+
             $this->map[$y][$x] = $tetoriminone->getTile();
         }
     }
