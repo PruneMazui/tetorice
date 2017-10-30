@@ -1,6 +1,9 @@
 <?php
 namespace PruneMazui\Tetrice\Controller;
 
+/**
+ * @codeCoverageIgnore
+ */
 class ControllerKeyboard extends Controller
 {
     private $key_map = [

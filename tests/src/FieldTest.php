@@ -46,4 +46,9 @@ class FieldTest extends TestCase
         // ちゃんと消えた部分が埋められているか
         $this->assertMap($field);
     }
+
+//     public function testLand()
+//     {
+//         $field = new Field();
+//     }
 }

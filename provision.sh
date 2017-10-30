@@ -4,7 +4,7 @@ yum install -y git unzip
 
 yum install -y epel-release
 yum install -y http://rpms.famillecollet.com/enterprise/remi-release-7.rpm
-yum install -y --enablerepo=remi-php71 php php-cli php-common php-devel php-xml php-mbstring
+yum install -y --enablerepo=remi-php71 php php-cli php-common php-devel php-xml php-mbstring php-pecl-xdebug
 
 \cp -f /usr/share/zoneinfo/Japan /etc/localtime
 \cp -f /etc/selinux/config /etc/selinux/config_org
