@@ -8,6 +8,16 @@ use PruneMazui\Tetrice\Controller\AbstractController;
 
 class GameManager implements FrameProcessInterface
 {
+    private static $fallLevelMap = [
+        1 => 700,  // 1秒で1落ちる
+        2 => 500,  // 0.8秒で1落ちる
+        3 => 300,  // 0.6秒で
+        4 => 100,
+        5 => 50,
+    ];
+
+    private static $level = 1;
+
     /**
      * @var AbstractController
      */
@@ -49,16 +59,14 @@ class GameManager implements FrameProcessInterface
     public function frameProcess($mm_sec)
     {
         if (is_null($this->tetoriminone)) {
-            $this->tetoriminone = $this->factory->create($mm_sec);
+            $this->field->erase();
+            $this->tetoriminone = $this->factory->create(self::$fallLevelMap[self::$level]);
         }
 
         $this->tetoriminone->frameProcess($mm_sec);
 
         if ($this->tetoriminone->isLand()) {
             $this->field->land($this->tetoriminone);
-
-            $this->field->erase();
-
             $this->tetoriminone = null;
         }
 

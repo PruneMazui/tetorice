@@ -9,21 +9,26 @@ use PruneMazui\Tetrice\Controller\AbstractController;
 
 abstract class AbstractTetoriminone implements FrameProcessInterface
 {
-    private static $fallLevelMap = [
-        1 => 1000, // 1秒で1落ちる
-        2 => 600,  // 0.8秒で1落ちる
-        3 => 300,  // 0.6秒で
-        4 => 100,
-        5 => 50,
-    ];
+    /**
+     * 入力の最小インターバル
+     * @var integer
+     */
+    const INPUT_MINIMAL_INTERVAL_MM_SEC = 30;
 
-    private static $level = 1;
-
+    /**
+     * @var Field
+     */
     protected $field;
 
+    /**
+     * @var AbstractController
+     */
     protected $controller;
 
-    private $create_mm_sec;
+    /**
+     * @var int 1マス落ちるまでの秒数
+     */
+    private $fall_speed;
 
     private $pre_fall_mm_sec;
     private $pre_move_mm_sec;
@@ -42,11 +47,11 @@ abstract class AbstractTetoriminone implements FrameProcessInterface
      * @param AbstractController $controller
      * @param int $mm_sec
      */
-    public function __construct(Field $field, AbstractController $controller, $mm_sec)
+    public function __construct(Field $field, AbstractController $controller, $fall_speed)
     {
-        $this->create_mm_sec = $mm_sec;
         $this->field = $field;
         $this->controller = $controller;
+        $this->fall_speed = $fall_speed;
     }
 
     /**
@@ -177,7 +182,7 @@ abstract class AbstractTetoriminone implements FrameProcessInterface
         }
 
         // 横moveできるか
-        if ($mm_sec - $this->pre_move_mm_sec >= 100) { // 連続移動を防止するために一定時間フレームをスキップ
+        if ($mm_sec - $this->pre_move_mm_sec >= self::INPUT_MINIMAL_INTERVAL_MM_SEC) {
             if (
                 $this->controller->isInputLeft() ||
                 $this->controller->isInputRight()
@@ -192,9 +197,8 @@ abstract class AbstractTetoriminone implements FrameProcessInterface
             ]);
         }
 
-
         // rotate処理
-        if ($mm_sec - $this->pre_rotate_mm_sec >= 100) { // 連続移動を防止するために一定時間フレームをスキップ
+        if ($mm_sec - $this->pre_rotate_mm_sec >= self::INPUT_MINIMAL_INTERVAL_MM_SEC) {
             if ($this->controller->isInputRotateRight()) {
                 $this->rotate($this->field);
                 $this->pre_rotate_mm_sec = $mm_sec;
@@ -207,7 +211,7 @@ abstract class AbstractTetoriminone implements FrameProcessInterface
         }
 
         // 落下処理（着地判定も）
-        if ($mm_sec - $this->pre_fall_mm_sec >= min(self::$fallLevelMap)) { // 連続移動を防止するために一定時間フレームをスキップ
+        if ($mm_sec - $this->pre_fall_mm_sec >= self::INPUT_MINIMAL_INTERVAL_MM_SEC) {
             if($this->controller->isInputUp()) {
                 // 失敗するまで繰り返す
                 while ($this->fall($this->field)) {}
@@ -215,7 +219,7 @@ abstract class AbstractTetoriminone implements FrameProcessInterface
                 $this->isLand = true;
             } else if(
                 $this->controller->isInputDown() || // 下が押されたとき
-                $mm_sec - $this->pre_fall_mm_sec >= self::$fallLevelMap[self::$level] // ゲームレベルに応じての自然落下
+                $mm_sec - $this->pre_fall_mm_sec >= $this->fall_speed // ゲームレベルに応じての自然落下
             ) {
                 // 落下失敗したら着地とみなす
                 if (! $this->fall($this->field)) {

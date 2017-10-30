@@ -21,22 +21,22 @@ class TetoriminoneFactory
     }
 
     /**
-     * @param int $mm_sec
+     * @param int $fall_speed
      * @return \PruneMazui\Tetrice\GameCore\Tetoriminone\AbstractTetoriminone
      */
-    public function create($mm_sec)
+    public function create($fall_speed)
     {
         $field = $this->field;
         $controller = $this->controller;
 
         switch (mt_rand() % 7) {
-            case 0: return new ITetoriminone($field, $controller, $mm_sec);
-            case 1: return new OTetoriminone($field, $controller, $mm_sec);
-            case 2: return new STetoriminone($field, $controller, $mm_sec);
-            case 3: return new ZTetoriminone($field, $controller, $mm_sec);
-            case 4: return new JTetoriminone($field, $controller, $mm_sec);
-            case 5: return new LTetoriminone($field, $controller, $mm_sec);
-            default: return new TTetoriminone($field, $controller, $mm_sec);
+            case 0: return new ITetoriminone($field, $controller, $fall_speed);
+            case 1: return new OTetoriminone($field, $controller, $fall_speed);
+            case 2: return new STetoriminone($field, $controller, $fall_speed);
+            case 3: return new ZTetoriminone($field, $controller, $fall_speed);
+            case 4: return new JTetoriminone($field, $controller, $fall_speed);
+            case 5: return new LTetoriminone($field, $controller, $fall_speed);
+            default: return new TTetoriminone($field, $controller, $fall_speed);
         }
     }
 }
