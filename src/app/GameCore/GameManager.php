@@ -5,6 +5,7 @@ use PruneMazui\Tetrice\FrameProcessInterface;
 use PruneMazui\Tetrice\GameCore\Tetoriminone\AbstractTetoriminone;
 use PruneMazui\Tetrice\GameCore\Tetoriminone\TetoriminoneFactory;
 use PruneMazui\Tetrice\Controller\Controller;
+use PruneMazui\Tetrice\Config;
 
 class GameManager implements FrameProcessInterface
 {
@@ -16,7 +17,7 @@ class GameManager implements FrameProcessInterface
         5 => 50,
     ];
 
-    private static $level = 1;
+    private $level = 1;
 
     /**
      * @var Controller
@@ -43,10 +44,14 @@ class GameManager implements FrameProcessInterface
      */
     private $factory;
 
-    public function __construct(Controller $controller)
+    public function __construct(Controller $controller, Config $config = null)
     {
+        if (!is_null($config) && array_key_exists($config->start_level, self::$fallLevelMap)) {
+            $this->level = $config->start_level;
+        }
+
         $this->controller = $controller;
-        $this->field = new Field();
+        $this->field = new Field($config);
         $this->renderer = new Renderer();
 
         $this->factory = new TetoriminoneFactory($this->field, $controller);
@@ -60,7 +65,7 @@ class GameManager implements FrameProcessInterface
     {
         if (is_null($this->tetoriminone)) {
             $this->field->erase();
-            $this->tetoriminone = $this->factory->create(self::$fallLevelMap[self::$level]);
+            $this->tetoriminone = $this->factory->create(self::$fallLevelMap[$this->level]);
         }
 
         $this->tetoriminone->frameProcess($mm_sec);

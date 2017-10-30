@@ -3,6 +3,7 @@ namespace PruneMazui\Tetrice\GameCore;
 
 use PruneMazui\Tetrice\GameCore\Tetoriminone\AbstractTetoriminone;
 use PruneMazui\Tetrice\GameCore\Tile\AbstractTile;
+use PruneMazui\Tetrice\Config;
 
 class Field
 {
@@ -15,8 +16,13 @@ class Field
      */
     private $map = [];
 
-    public function __construct()
+    public function __construct(Config $config = null)
     {
+        if (! is_null($config)) {
+            $this->width = $config->field_width;
+            $this->height = $config->field_height;
+        }
+
         // マップを初期化
         for ($i = 0; $i < $this->height; $i++) {
             $this->map[$i] = array_fill(0, $this->width, null);
