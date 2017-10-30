@@ -9,7 +9,7 @@ class Field
 {
     private $width = 10;
 
-    private $height = 20;
+    private $height = 19;
 
     /**
      * @var array (AbstractTile|null)[y][x]
