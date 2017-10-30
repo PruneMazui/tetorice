@@ -3,5 +3,19 @@
         "psr-4": {
             "PruneMazui\\Tetrice\\" : "src/app"
         }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "PruneMazui\\Tetrice\\Tests\\" : "tests/mock"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^5.7",
+        "satooshi/php-coveralls": "^1.0"
+    },
+    "scripts": {
+        "test": [
+            "vendor/bin/phpunit"
+        ]
     }
 }

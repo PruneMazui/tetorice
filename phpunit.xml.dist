@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<phpunit
+    bootstrap="./tests/preload.php"
+    colors="true"
+    convertErrorsToExceptions="true"
+    convertNoticesToExceptions="true"
+    convertWarningsToExceptions="true"
+    verbose="true"
+    stopOnFailure="false"
+    processIsolation="false"
+    backupGlobals="false"
+    syntaxCheck="true"
+>
+    <testsuite name="PruneMazui\Tetrice tests">
+        <directory>./tests/src/</directory>
+    </testsuite>
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">./src/app</directory>
+        </whitelist>
+    </filter>
+
+<!--
+    <logging>
+        <log type="coverage-html" target="./report" lowUpperBound="35" highLowerBound="70"/>
+    </logging>
+-->
+</phpunit>

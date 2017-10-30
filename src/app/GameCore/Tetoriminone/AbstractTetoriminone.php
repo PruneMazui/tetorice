@@ -2,65 +2,72 @@
 namespace PruneMazui\Tetrice\GameCore\Tetoriminone;
 
 use PruneMazui\Tetrice\GameCore\Field;
-use PruneMazui\Tetrice\Controller;
 use PruneMazui\Tetrice\FrameProcessInterface;
 use PruneMazui\Tetrice\GameCore\GameOverException;
 use PruneMazui\Tetrice\GameCore\Tile\AbstractTile;
+use PruneMazui\Tetrice\Controller\Controller;
 
 abstract class AbstractTetoriminone implements FrameProcessInterface
 {
-    private static $fallLevelMap = [
-        1 => 1000, // 1秒で1落ちる
-        2 => 600,  // 0.8秒で1落ちる
-        3 => 300,  // 0.6秒で
-        4 => 100,
-        5 => 50,
-    ];
+    /**
+     * 入力の最小インターバル
+     * @var integer
+     */
+    const INPUT_MINIMAL_INTERVAL_MM_SEC = 30;
 
-    private static $level = 1;
+    /**
+     * @var Field
+     */
+    protected $field;
 
-    protected $feild;
-
+    /**
+     * @var Controller
+     */
     protected $controller;
 
-    private $create_mm_sec;
+    /**
+     * @var int 1マス落ちるまでの秒数
+     */
+    private $fall_speed;
 
     private $pre_fall_mm_sec;
     private $pre_move_mm_sec;
     private $pre_rotate_mm_sec;
+
+    private $isLand = false;
 
     /**
      * @var array [[x, y], [x, y], [x, y], [x, y]]
      */
     protected $coordinates;
 
-    private $isLand = false;
 
     /**
-     * @param Field $feild
+     * @param Field $field
      * @param Controller $controller
      * @param int $mm_sec
      */
-    public function __construct(Field $feild, Controller $controller, $mm_sec)
+    public function __construct(Field $field, Controller $controller, $fall_speed)
     {
-        $this->create_mm_sec = $mm_sec;
-        $this->feild = $feild;
+        $this->field = $field;
         $this->controller = $controller;
+        $this->fall_speed = $fall_speed;
     }
 
     /**
-     * 座標初期化
-     *
+     * 初期座標を返す
+     * @param int $center
      * @return array [[x, y], [x, y], [x, y], [x, y]]
      */
-    abstract protected function initCoordinates($center);
+    abstract protected function getInitialCoordinates($center);
+
 
     /**
-     * 現在から回転処理させたときの座標を返す
+     * 現在位置から回転
      *
-     * @return array [[x, y], [x, y], [x, y], [x, y]]
+     * @return bool
      */
-    abstract protected function rotate();
+    abstract protected function rotate(Field $field);
 
     /**
      * タイルインスタンスを返す
@@ -70,40 +77,74 @@ abstract class AbstractTetoriminone implements FrameProcessInterface
     abstract public function getTile();
 
     /**
-     * 現在から動いたときの座標を返す
+     * 座標初期化
      *
-     * @param boolean optional $is_left
-     * @return array [[x, y], [x, y], [x, y], [x, y]]
+     * @param Field $field
+     * @return bool
      */
-    protected function move($is_left = true)
+    protected function initCoordinates(Field $field)
+    {
+        $initial = $this->getInitialCoordinates($field->getHorizontalCenter());
+        if ($field->isCollision($initial)) {
+            return false;
+        }
+
+        $this->coordinates = $initial;
+        return true;
+    }
+
+
+    /**
+     * 現在位置から動く
+     *
+     * @param Field $field
+     * @param boolean optional $is_left
+     * @return bool
+     */
+    protected function move(Field $field, $is_left = true)
     {
         $addtion_x = $is_left ? -1 : 1;
 
-        $ret = [];
+        $next = [];
         foreach ($this->coordinates as $coordinate) {
             list($x, $y) = $coordinate;
-            $ret[] = [$x + $addtion_x, $y];
+            $next[] = [$x + $addtion_x, $y];
         }
-        return $ret;
+
+        if ($field->isCollision($next)) {
+            return false;
+        }
+
+        $this->coordinates = $next;
+        return true;
     }
 
     /**
-     * 現在から落下したときの座標を返す
+     * 現在位置から落下
      *
-     * @param boolean optional $is_left
-     * @return array [[x, y], [x, y], [x, y], [x, y]]
+     * @param Field $field
+     * @return boolean
      */
-    protected function fall()
+    protected function fall(Field $field)
     {
-        $ret = [];
+        $next = [];
         foreach ($this->coordinates as $coordinate) {
             list($x, $y) = $coordinate;
-            $ret[] = [$x, $y + 1];
+            $next[] = [$x, $y + 1];
         }
-        return $ret;
+
+        if ($field->isCollision($next)) {
+            return false;
+        }
+
+        $this->coordinates = $next;
+
+        return true;
     }
 
     /**
+     * 着地しているか
+     *
      * @return boolean
      */
     public function isLand()
@@ -128,9 +169,8 @@ abstract class AbstractTetoriminone implements FrameProcessInterface
     public function frameProcess($mm_sec)
     {
         if (is_null($this->coordinates)) {
-            $this->coordinates = $this->initCoordinates(intval($this->feild->getWidth() / 2));
 
-            if ($this->feild->isCollision($this->coordinates)) {
+            if (! $this->initCoordinates($this->field)) {
                 throw new GameOverException();
             }
 
@@ -143,16 +183,12 @@ abstract class AbstractTetoriminone implements FrameProcessInterface
         }
 
         // 横moveできるか
-        if ($mm_sec - $this->pre_move_mm_sec >= 100) { // 連続移動を防止するために一定時間フレームをスキップ
+        if ($mm_sec - $this->pre_move_mm_sec >= self::INPUT_MINIMAL_INTERVAL_MM_SEC) {
             if (
                 $this->controller->isInputLeft() ||
                 $this->controller->isInputRight()
             ) {
-                $moved = $this->move($this->controller->isInputLeft());
-                if (! $this->feild->isCollision($moved)) {
-                    $this->coordinates = $moved;
-                }
-
+                $this->move($this->field, $this->controller->isInputLeft());
                 $this->pre_move_mm_sec = $mm_sec;
             }
 
@@ -162,15 +198,10 @@ abstract class AbstractTetoriminone implements FrameProcessInterface
             ]);
         }
 
-
         // rotate処理
-        if ($mm_sec - $this->pre_rotate_mm_sec >= 100) { // 連続移動を防止するために一定時間フレームをスキップ
+        if ($mm_sec - $this->pre_rotate_mm_sec >= self::INPUT_MINIMAL_INTERVAL_MM_SEC) {
             if ($this->controller->isInputRotateRight()) {
-                $rotated = $this->rotate();
-                if (! $this->feild->isCollision($rotated)) {
-                    $this->coordinates = $rotated;
-                }
-
+                $this->rotate($this->field);
                 $this->pre_rotate_mm_sec = $mm_sec;
             }
 
@@ -181,19 +212,20 @@ abstract class AbstractTetoriminone implements FrameProcessInterface
         }
 
         // 落下処理（着地判定も）
-        if ($mm_sec - $this->pre_fall_mm_sec >= min(self::$fallLevelMap)) { // 連続移動を防止するために一定時間フレームをスキップ
-            // @todo 上が押されたときの即落下処理
-            if(
+        if ($mm_sec - $this->pre_fall_mm_sec >= self::INPUT_MINIMAL_INTERVAL_MM_SEC) {
+            if($this->controller->isInputUp()) {
+                // 失敗するまで繰り返す
+                while ($this->fall($this->field)) {}
+                $this->pre_fall_mm_sec = $mm_sec;
+                $this->isLand = true;
+            } else if(
                 $this->controller->isInputDown() || // 下が押されたとき
-                $mm_sec - $this->pre_fall_mm_sec >= self::$fallLevelMap[self::$level] // ゲームレベルに応じての自然落下
+                $mm_sec - $this->pre_fall_mm_sec >= $this->fall_speed // ゲームレベルに応じての自然落下
             ) {
-                $falled = $this->fall();
-                if ($this->feild->isCollision($falled)) {
+                // 落下失敗したら着地とみなす
+                if (! $this->fall($this->field)) {
                     $this->isLand = true;
-                } else {
-                    $this->coordinates = $falled;
                 }
-
                 $this->pre_fall_mm_sec = $mm_sec;
             }
 

@@ -2,28 +2,44 @@
 namespace PruneMazui\Tetrice\GameCore;
 
 use PruneMazui\Tetrice\GameCore\Tetoriminone\AbstractTetoriminone;
+use PruneMazui\Tetrice\GameCore\Tile\AbstractTile;
+use PruneMazui\Tetrice\Config;
 
 class Field
 {
     private $width = 10;
 
-    private $height = 20;
+    private $height = 19;
 
     /**
-     * @var array [y][x]
+     * @var array (AbstractTile|null)[y][x]
      */
     private $map = [];
 
-    public function __construct()
+    public function __construct(Config $config = null)
     {
+        if (! is_null($config)) {
+            $this->width = $config->field_width;
+            $this->height = $config->field_height;
+        }
+
         // マップを初期化
         for ($i = 0; $i < $this->height; $i++) {
-            $this->map[$i] = [];
-
-            for ($j = 0; $j < $this->width; $j++) {
-                $this->map[$i][$j] = null;
-            }
+            $this->map[$i] = array_fill(0, $this->width, null);
         }
+    }
+
+    /**
+     * @param int $x
+     * @param int $y
+     * @param AbstractTile $tile
+     */
+    public function setTile($x, $y, AbstractTile $tile)
+    {
+        assert('array_key_exists($y, $this->map)');
+        assert('array_key_exists($x, $this->map[$y])');
+
+        $this->map[$y][$x] = $tile;
     }
 
     /**
@@ -48,6 +64,15 @@ class Field
     public function getHeight()
     {
         return $this->height;
+    }
+
+    /**
+     * 水平位置の中心を返す
+     * @return int
+     */
+    public function getHorizontalCenter()
+    {
+        return intval($this->width / 2);
     }
 
     /**
@@ -93,8 +118,52 @@ class Field
     {
         foreach ($tetoriminone->getCoordinates() as $coordinate) {
             list($x, $y) = $coordinate;
+
+            if ($x < 0 || $x >= $this->width) {
+                continue;
+            }
+
+            if ($y < 0 || $y >= $this->height) {
+                continue;
+            }
+
             $this->map[$y][$x] = $tetoriminone->getTile();
         }
+    }
+
+    /**
+     * 揃ってるラインを消す
+     * @return int 消したライン数
+     */
+    public function erase()
+    {
+        $erase_count = 0;
+        $new = [];
+
+        foreach ($this->map as $y => $line) {
+            $is_erasable = true;
+
+            foreach ($line as $y => $value) {
+                if (is_null($value)) {
+                    $is_erasable = false;
+                    break;
+                }
+            }
+
+            if (! $is_erasable) {
+                $new[] = $line;
+                continue;
+            }
+
+            $erase_count++;
+        }
+
+        for ($i = 0; $i < $erase_count; $i++) {
+            array_unshift($new, array_fill(0, $this->width, null));
+        }
+
+        $this->map = $new;
+        return $erase_count;
     }
 
 }

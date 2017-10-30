@@ -1,7 +1,7 @@
 <?php
 namespace PruneMazui\Tetrice\GameCore\Tile;
 
-class TileMagenta extends AbstractTile
+class TileCyan extends AbstractTile
 {
     /**
      * {@inheritDoc}
