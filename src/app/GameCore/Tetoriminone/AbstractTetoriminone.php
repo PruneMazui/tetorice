@@ -5,7 +5,7 @@ use PruneMazui\Tetrice\GameCore\Field;
 use PruneMazui\Tetrice\FrameProcessInterface;
 use PruneMazui\Tetrice\GameCore\GameOverException;
 use PruneMazui\Tetrice\GameCore\Tile\AbstractTile;
-use PruneMazui\Tetrice\Controller\AbstractController;
+use PruneMazui\Tetrice\Controller\Controller;
 
 abstract class AbstractTetoriminone implements FrameProcessInterface
 {
@@ -21,7 +21,7 @@ abstract class AbstractTetoriminone implements FrameProcessInterface
     protected $field;
 
     /**
-     * @var AbstractController
+     * @var Controller
      */
     protected $controller;
 
@@ -44,10 +44,10 @@ abstract class AbstractTetoriminone implements FrameProcessInterface
 
     /**
      * @param Field $field
-     * @param AbstractController $controller
+     * @param Controller $controller
      * @param int $mm_sec
      */
-    public function __construct(Field $field, AbstractController $controller, $fall_speed)
+    public function __construct(Field $field, Controller $controller, $fall_speed)
     {
         $this->field = $field;
         $this->controller = $controller;
@@ -138,6 +138,7 @@ abstract class AbstractTetoriminone implements FrameProcessInterface
         }
 
         $this->coordinates = $next;
+
         return true;
     }
 
@@ -192,8 +193,8 @@ abstract class AbstractTetoriminone implements FrameProcessInterface
             }
 
             $this->controller->clear([
-                AbstractController::LEFT,
-                AbstractController::RIGHT
+                Controller::LEFT,
+                Controller::RIGHT
             ]);
         }
 
@@ -205,8 +206,8 @@ abstract class AbstractTetoriminone implements FrameProcessInterface
             }
 
             $this->controller->clear([
-                AbstractController::ROTATE_LEFT,
-                AbstractController::ROTATE_RIGHT
+                Controller::ROTATE_LEFT,
+                Controller::ROTATE_RIGHT
             ]);
         }
 
@@ -229,8 +230,8 @@ abstract class AbstractTetoriminone implements FrameProcessInterface
             }
 
             $this->controller->clear([
-                AbstractController::DOWN,
-                AbstractController::UP
+                Controller::DOWN,
+                Controller::UP
             ]);
         }
     }

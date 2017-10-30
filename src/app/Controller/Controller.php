@@ -3,7 +3,7 @@ namespace PruneMazui\Tetrice\Controller;
 
 use PruneMazui\Tetrice\LoopProcessInterface;
 
-abstract class AbstractController implements ControllerInterface, LoopProcessInterface
+abstract class Controller implements ControllerInterface, LoopProcessInterface
 {
     const LEFT = 'left';
     const RIGHT = 'right';

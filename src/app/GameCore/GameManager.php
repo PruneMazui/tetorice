@@ -4,7 +4,7 @@ namespace PruneMazui\Tetrice\GameCore;
 use PruneMazui\Tetrice\FrameProcessInterface;
 use PruneMazui\Tetrice\GameCore\Tetoriminone\AbstractTetoriminone;
 use PruneMazui\Tetrice\GameCore\Tetoriminone\TetoriminoneFactory;
-use PruneMazui\Tetrice\Controller\AbstractController;
+use PruneMazui\Tetrice\Controller\Controller;
 
 class GameManager implements FrameProcessInterface
 {
@@ -19,7 +19,7 @@ class GameManager implements FrameProcessInterface
     private static $level = 1;
 
     /**
-     * @var AbstractController
+     * @var Controller
      */
     private $controller;
 
@@ -43,7 +43,7 @@ class GameManager implements FrameProcessInterface
      */
     private $factory;
 
-    public function __construct(AbstractController $controller)
+    public function __construct(Controller $controller)
     {
         $this->controller = $controller;
         $this->field = new Field();

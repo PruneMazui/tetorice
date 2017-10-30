@@ -1,7 +1,7 @@
 <?php
 namespace PruneMazui\Tetrice\Controller;
 
-class ControllerKeyboard extends AbstractController
+class ControllerKeyboard extends Controller
 {
     private $key_map = [
         self::LEFT => ['1b5b44'],
