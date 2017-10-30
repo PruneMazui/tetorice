@@ -2,10 +2,10 @@
 namespace PruneMazui\Tetrice\GameCore\Tetoriminone;
 
 use PruneMazui\Tetrice\GameCore\Field;
-use PruneMazui\Tetrice\Controller;
 use PruneMazui\Tetrice\FrameProcessInterface;
 use PruneMazui\Tetrice\GameCore\GameOverException;
 use PruneMazui\Tetrice\GameCore\Tile\AbstractTile;
+use PruneMazui\Tetrice\Controller\AbstractController;
 
 abstract class AbstractTetoriminone implements FrameProcessInterface
 {
@@ -39,10 +39,10 @@ abstract class AbstractTetoriminone implements FrameProcessInterface
 
     /**
      * @param Field $field
-     * @param Controller $controller
+     * @param AbstractController $controller
      * @param int $mm_sec
      */
-    public function __construct(Field $field, Controller $controller, $mm_sec)
+    public function __construct(Field $field, AbstractController $controller, $mm_sec)
     {
         $this->create_mm_sec = $mm_sec;
         $this->field = $field;
@@ -187,8 +187,8 @@ abstract class AbstractTetoriminone implements FrameProcessInterface
             }
 
             $this->controller->clear([
-                Controller::LEFT,
-                Controller::RIGHT
+                AbstractController::LEFT,
+                AbstractController::RIGHT
             ]);
         }
 
@@ -201,8 +201,8 @@ abstract class AbstractTetoriminone implements FrameProcessInterface
             }
 
             $this->controller->clear([
-                Controller::ROTATE_LEFT,
-                Controller::ROTATE_RIGHT
+                AbstractController::ROTATE_LEFT,
+                AbstractController::ROTATE_RIGHT
             ]);
         }
 
@@ -225,8 +225,8 @@ abstract class AbstractTetoriminone implements FrameProcessInterface
             }
 
             $this->controller->clear([
-                Controller::DOWN,
-                Controller::UP
+                AbstractController::DOWN,
+                AbstractController::UP
             ]);
         }
     }

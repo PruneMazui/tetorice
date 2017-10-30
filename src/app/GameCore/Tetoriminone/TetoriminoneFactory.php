@@ -2,7 +2,7 @@
 namespace PruneMazui\Tetrice\GameCore\Tetoriminone;
 
 use PruneMazui\Tetrice\GameCore\Field;
-use PruneMazui\Tetrice\Controller;
+use PruneMazui\Tetrice\Controller\AbstractController;
 
 class TetoriminoneFactory
 {
@@ -12,9 +12,9 @@ class TetoriminoneFactory
 
     /**
      * @param Field $field
-     * @param Controller $controller
+     * @param AbstractController $controller
      */
-    public function __construct(Field $field, Controller $controller)
+    public function __construct(Field $field, AbstractController $controller)
     {
         $this->field = $field;
         $this->controller = $controller;

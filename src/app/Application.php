@@ -3,6 +3,7 @@ namespace PruneMazui\Tetrice;
 
 use PruneMazui\Tetrice\GameCore\GameManager;
 use PruneMazui\Tetrice\GameCore\GameOverException;
+use PruneMazui\Tetrice\Controller\ControllerKeyboard;
 
 class Application
 {
@@ -15,7 +16,7 @@ class Application
 
     public function run()
     {
-        $controller = new Controller();
+        $controller = new ControllerKeyboard();
         $game_manager = new GameManager($controller);
 
         ob_start();

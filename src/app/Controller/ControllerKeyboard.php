@@ -1,16 +1,8 @@
 <?php
-namespace PruneMazui\Tetrice;
+namespace PruneMazui\Tetrice\Controller;
 
-class Controller implements LoopProcessInterface
+class ControllerKeyboard extends AbstractController
 {
-    const LEFT = 'left';
-    const RIGHT = 'right';
-    const DOWN = 'down';
-    const UP = 'up';
-
-    const ROTATE_RIGHT = 'rotate_right';
-    const ROTATE_LEFT = 'rotate_left';
-
     private $key_map = [
         self::LEFT => ['1b5b44'],
         self::RIGHT => ['1b5b43'],
@@ -85,8 +77,8 @@ class Controller implements LoopProcessInterface
     }
 
     /**
-     * 入力バッファをクリア
-     * @param string | array optional $types
+     * {@inheritDoc}
+     * @see \PruneMazui\Tetrice\Controller\ControllerInterface::clear()
      */
     public function clear($types = null)
     {
@@ -127,8 +119,8 @@ class Controller implements LoopProcessInterface
     }
 
     /**
-     * 左が入力されているか
-     * @return boolean
+     * {@inheritDoc}
+     * @see \PruneMazui\Tetrice\Controller\ControllerInterface::isInputLeft()
      */
     public function isInputLeft()
     {
@@ -136,8 +128,8 @@ class Controller implements LoopProcessInterface
     }
 
     /**
-     * 右が入力されているか
-     * @return boolean
+     * {@inheritDoc}
+     * @see \PruneMazui\Tetrice\Controller\ControllerInterface::isInputRight()
      */
     public function isInputRight()
     {
@@ -145,8 +137,8 @@ class Controller implements LoopProcessInterface
     }
 
     /**
-     * 下が入力されているか
-     * @return boolean
+     * {@inheritDoc}
+     * @see \PruneMazui\Tetrice\Controller\ControllerInterface::isInputDown()
      */
     public function isInputDown()
     {
@@ -154,8 +146,8 @@ class Controller implements LoopProcessInterface
     }
 
     /**
-     * 上が入力されているか
-     * @return boolean
+     * {@inheritDoc}
+     * @see \PruneMazui\Tetrice\Controller\ControllerInterface::isInputUp()
      */
     public function isInputUp()
     {
@@ -163,8 +155,8 @@ class Controller implements LoopProcessInterface
     }
 
     /**
-     * 右回転が入力されているか
-     * @return boolean
+     * {@inheritDoc}
+     * @see \PruneMazui\Tetrice\Controller\ControllerInterface::isInputRotateRight()
      */
     public function isInputRotateRight()
     {
@@ -172,8 +164,8 @@ class Controller implements LoopProcessInterface
     }
 
     /**
-     * 左回転が入力されているか
-     * @return boolean
+     * {@inheritDoc}
+     * @see \PruneMazui\Tetrice\Controller\ControllerInterface::isInputRotateLeft()
      */
     public function isInputRotateLeft()
     {
