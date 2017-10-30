@@ -44,15 +44,14 @@ class TTetoriminone extends AbstractTetoriminone
             ];
         }
 
-        if ($rotation_count % 4 == 3) {
-            return [
-                [$x,   $y],
-                [$x-1, $y],     // 左
-                // [$x+1, $y],     // 右
-                [$x,   $y-1],   // 上
-                [$x,   $y+1],   // 下
-            ];
-        }
+        // $rotation_count % 4 == 3
+        return [
+            [$x,   $y],
+            [$x-1, $y],     // 左
+            // [$x+1, $y],     // 右
+            [$x,   $y-1],   // 上
+            [$x,   $y+1],   // 下
+        ];
     }
 
     /**

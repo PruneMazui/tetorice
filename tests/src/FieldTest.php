@@ -1,5 +1,5 @@
 <?php
-namespace PruneMazui\Tetrice\Tests\GameCore;
+namespace PruneMazui\Tetrice\Tests;
 
 use PHPUnit\Framework\TestCase;
 use PruneMazui\Tetrice\GameCore\Field;

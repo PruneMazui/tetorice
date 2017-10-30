@@ -41,14 +41,13 @@ class LTetoriminone extends AbstractTetoriminone
             ];
         }
 
-        if ($rotation_count % 4 == 3) {
-            return [
-                [$x-1, $y],
-                [$x,   $y],
-                [$x,   $y+1],
-                [$x,   $y+2],
-            ];
-        }
+        // $rotation_count % 4 == 3
+        return [
+            [$x-1, $y],
+            [$x,   $y],
+            [$x,   $y+1],
+            [$x,   $y+2],
+        ];
     }
 
     /**
