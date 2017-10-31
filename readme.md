@@ -23,8 +23,8 @@ unzip master.zip
 cd tetorice-master
 
 curl -sS https://getcomposer.org/installer | php
-php composer.phar --no-dev
-./bin/tetorice
+php composer.phar --no-dev install
+php ./bin/tetorice
 ```
 
 ## How To Play
