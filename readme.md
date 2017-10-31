@@ -12,7 +12,7 @@ It is a game to erase the line.
 
 ## Requirement
 
-* PHP >= 5.6 or PHP >= 7.0
+* PHP == 5.6 or PHP >= 7.0
 * POSIX
 
 ## Usage
@@ -26,6 +26,11 @@ curl -sS https://getcomposer.org/installer | php
 php composer.phar --no-dev
 ./bin/tetorice
 ```
+
+## How To Play
+
+* move ... cursor key
+* rotate ... space key
 
 ## Licence
 
